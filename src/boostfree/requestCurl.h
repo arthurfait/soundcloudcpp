@@ -1,4 +1,5 @@
 #include <curl/curl.h>
+#include <cstdint>
 #include <string>
 
 namespace soundcloud {
@@ -23,7 +24,9 @@ private:
     CURL *m_curlHandle;
 
     static void initializeIfNeeded();
+    static void deinitIfNeeded();
     static bool s_initialized;
+    static uint32_t s_objectCount;
 
 };
 
