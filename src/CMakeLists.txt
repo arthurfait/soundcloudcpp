@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8)
-find_package(Boost COMPONENTS system REQUIRED)
 find_package(PkgConfig)
+pkg_check_modules(CURL REQUIRED libcurl)
 pkg_check_modules(SSL REQUIRED openssl)
+
+add_subdirectory("support")
 
 add_definitions(-Wno-ignored-qualifiers)
 
@@ -12,16 +14,13 @@ add_definitions(-Wno-ignored-qualifiers)
 #     ${COMMONAPIDBUS_INCLUDE_DIRS}
 #     )
 
-set(MIRACAST_SERVICE_LIBRARIES
-    ${Boost_SYSTEM_LIBRARY}
+set(CURL_CLIENT_LIBRARIES
+    ${CURL_LIBRARIES}
     ${SSL_LIBRARIES}
-    pthread
+    support_json
 )
 
 
-include_directories(${MIRACAST_SERVICE_INCLUDE_DIRECTORIES})
-
-add_executable(timer1 client.cc)
-
-target_link_libraries(timer1 ${MIRACAST_SERVICE_LIBRARIES})
-
+project(curl_client_test)
+add_executable(${PROJECT_NAME} boostfree/curl_client_test.cc)
+target_link_libraries(${PROJECT_NAME} ${CURL_CLIENT_LIBRARIES})

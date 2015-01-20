@@ -18,7 +18,7 @@ public:
 
     boost::asio::async_connect(socket_.lowest_layer(), endpoint_iterator, boost::bind(&client::handle_connect, this, boost::asio::placeholders::error));
   }
-  
+
   bool verify_certificate(bool preverified, boost::asio::ssl::verify_context& ctx)
   {
     char subject_name[256];
@@ -43,7 +43,7 @@ public:
   {
     if(!error){
       std::cout << "Sending request: " << std::endl;
-      
+
       std::stringstream request_;
 
 // 0000: GET /tracks?client_id=a5a98f5d549a83896d565f69eb644b65&limit=10
@@ -62,7 +62,7 @@ public:
 
       request_ << "Accept: */*\r\n";
       request_ << "Connection: close\r\n";
-      
+
       // request_ << "Accept-Encoding: *\r\n";
       request_ << "\r\n";
 
@@ -110,7 +110,6 @@ int main(int argc, char* argv[])
     boost::asio::ip::tcp::resolver::iterator iterator = resolver.resolve(query);
 
     boost::asio::ssl::context context(boost::asio::ssl::context::sslv23);
-    // context.load_verify_file("key.pem");
     context.set_default_verify_paths();
 
     client c(io_service, context, iterator);
@@ -119,7 +118,7 @@ int main(int argc, char* argv[])
   }catch (std::exception& e){
     std::cerr << "Exception: " << e.what() << "\n";
   }
-  
+
   std::cin.get();
   return 0;
 }
