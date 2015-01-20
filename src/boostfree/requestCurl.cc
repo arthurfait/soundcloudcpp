@@ -3,13 +3,16 @@
 
 namespace soundcloud {
 
+// FIXME: proccess all error cases
+
 class requestCurl
 {
 public:
 requestCurl::requestCurl(const std::string& url)
     : m_url(url)
 {
-
+    initializeIfNeeded();
+    m_curlHandle = curl_easy_init();
 }
 
 requestCurl::requestCurl()

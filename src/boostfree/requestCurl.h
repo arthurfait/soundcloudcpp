@@ -20,6 +20,7 @@ public:
 
 private:
     std::string m_url;
+    CURL *m_curlHandle;
 
     static void initializeIfNeeded();
     static bool s_initialized;
