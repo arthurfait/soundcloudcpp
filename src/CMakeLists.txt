@@ -8,12 +8,6 @@ add_subdirectory("support")
 add_definitions(-std=c++11)
 add_definitions(-Wno-ignored-qualifiers)
 
-# set(MIRACAST_SERVICE_INCLUDE_DIRECTORIES
-#     ${GLIB2_INCLUDE_DIRS}
-#     ${COMMONAPI_INCLUDE_DIRS}
-#     ${DBUS1_INCLUDE_DIRS}
-#     ${COMMONAPIDBUS_INCLUDE_DIRS}
-#     )
 
 set(CURL_CLIENT_LIBRARIES
     ${CURL_LIBRARIES}
@@ -21,7 +15,6 @@ set(CURL_CLIENT_LIBRARIES
     support_json
 )
 
-
 project(curl_client_test)
-add_executable(${PROJECT_NAME} boostfree/curl_client_test.cc boostfree/requestCurl.cc)
+add_executable(${PROJECT_NAME} network/curl_client_test.cc network/requestCurl.cc)
 target_link_libraries(${PROJECT_NAME} ${CURL_CLIENT_LIBRARIES})
