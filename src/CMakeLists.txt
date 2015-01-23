@@ -25,5 +25,5 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/support
   ${CMAKE_CURRENT_SOURCE_DIR}/
   )
-add_executable(${PROJECT_NAME} parsers/tracksparser_test.cc)
+add_executable(${PROJECT_NAME} parser/tracksparser_test.cc)
 target_link_libraries(${PROJECT_NAME} support_json)
