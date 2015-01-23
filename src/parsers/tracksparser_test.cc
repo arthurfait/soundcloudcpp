@@ -2,6 +2,22 @@
 #include <string>
 #include <iostream>
 #include <json/json.h>
+#include "types/track.h"
+
+using soundcloud::Track;
+
+Track trackFromJsonValue(Json::Value& value)
+{
+    return Track(
+                value["title"].asString(),
+                value["description"].asString(),
+                value["genre"].asString(),
+                value["duration"].asInt(),
+                value["stream_url"].asString(),
+                value["license"].asString(),
+                value["artwork_url"].asString(),
+                value["waveform_url"].asString());
+}
 
 int main(int argc, char* argv[])
 {
@@ -31,14 +47,7 @@ int main(int argc, char* argv[])
         for (int i=0; i< root.size(); ++i) {
             if (root[i].type() == Json::objectValue) {
                 if (root[i]["kind"].asString() == "track") {
-                    std::cout << "duration: " << root[i]["duration"].asInt()/1000<< " seconds" << std::endl;
-                    std::cout << "genre: " << root[i]["genre"].asString() << std::endl;
-                    std::cout << "title: " << root[i]["title"].asString() << std::endl;
-                    std::cout << "stream_url: " << root[i]["stream_url"].asString() << std::endl;
-                    std::cout << "license: " << root[i]["license"].asString() << std::endl;
-                    std::cout << "artwork_url: " << root[i]["artwork_url"].asString() << std::endl;
-                    std::cout << "waveform_url: " << root[i]["waveform_url"].asString() << std::endl;
-                    std::cout << "description: " << root[i]["description"].asString() << std::endl;
+                    std::cout << trackFromJsonValue(root[i]) << std::endl;
                 }
             }
         }

@@ -23,6 +23,7 @@ target_link_libraries(${PROJECT_NAME} ${CURL_CLIENT_LIBRARIES})
 project(parsers_test)
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/support
+  ${CMAKE_CURRENT_SOURCE_DIR}/
   )
 add_executable(${PROJECT_NAME} parsers/tracksparser_test.cc)
 target_link_libraries(${PROJECT_NAME} support_json)
