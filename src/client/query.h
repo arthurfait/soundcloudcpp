@@ -33,7 +33,7 @@ public:
         , m_tag(tag)
     {}
 
-    virtual ~TracksQuery();
+    virtual ~TracksQuery() {}
 
     std::string getURLString() const;
 protected:

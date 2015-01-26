@@ -11,6 +11,7 @@ Client::Client(const std::string& clientID)
 
 std::vector<Track> Client::getTracks(const TracksQuery& query)
 {
+    std::cout << query.getURLString() << std::endl;
     requestCurl request(query.getURLString());
     requestCurl::SSLOps ops;
     ops.skip_peer_verification = true;
