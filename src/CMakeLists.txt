@@ -4,6 +4,7 @@ pkg_check_modules(CURL REQUIRED libcurl)
 pkg_check_modules(SSL REQUIRED openssl)
 
 add_subdirectory("support")
+add_subdirectory("parser")
 
 add_definitions(-std=c++11)
 add_definitions(-Wno-ignored-qualifiers)
@@ -26,4 +27,4 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/
   )
 add_executable(${PROJECT_NAME} parser/tracksparser_test.cc)
-target_link_libraries(${PROJECT_NAME} support_json)
+target_link_libraries(${PROJECT_NAME} support_json parser)

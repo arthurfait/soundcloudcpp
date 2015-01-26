@@ -20,6 +20,7 @@ public:
     std::vector<Track> parseTracks(const std::string& jsonData);
 
 private:
+    bool lastParsingSuccessful;
     Json::Value root;   // will contains the root value after parsing.
     Json::Reader reader;
 };

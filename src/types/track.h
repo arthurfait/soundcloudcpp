@@ -74,7 +74,7 @@ private:
     std::string m_waveform_url;
 };
 
-std::ostream& operator<<(std::ostream& os, const Track& track)
+inline std::ostream& operator<<(std::ostream& os, const Track& track)
 {
     os  << "Track =>" << std::endl
         << "\ttitle: " << track.title() << std::endl
