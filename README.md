@@ -2,12 +2,13 @@ soundcloudcpp
 ========
 
 TO BUILD:
+<pre>
 cd soundcloudcpp
 mkdir build
 cd build && cmake ../src/lib
 make or make -j <your num of cpus>
 This will build library and inner tests
-
+</pre>
 
 
 
