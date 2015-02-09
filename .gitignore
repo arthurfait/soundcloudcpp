@@ -29,3 +29,5 @@
 
 build/*
 src/build/*
+src/lib/build/*
+src/demo/build/*
