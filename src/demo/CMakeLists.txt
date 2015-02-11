@@ -13,5 +13,5 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME} main.cc)
-target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES} soundcloud_client)
 
