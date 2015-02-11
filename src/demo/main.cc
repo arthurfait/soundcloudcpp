@@ -1,7 +1,13 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
+#include <string>
+#include <vector>
 
-
+class Track {
+    std::string title;
+    std::string album;
+    std::string artist;
+};
 /* Create a new hbox with an image and a label packed into it
  * and return the box. */
 
@@ -64,7 +70,7 @@ void next_callback(GtkWidget *widget, gpointer data)
 
 
 
-class MainWindow: public USBMediaPlayerClient::IObserver
+class MainWindow
 {
 public:
     struct PQItem {
@@ -94,7 +100,7 @@ private:
     };
 
 private:
-    void fillPQList(const std::vector<MediaTypes::Track>& tracks);
+    void fillPQList(const std::vector<Track>& tracks);
 
 private:
 
@@ -124,10 +130,6 @@ private:
     GtkWidget *vbox;
 };
 
-void MainWindow::onPQIndexChange(const uint32_t& index)
-{
-
-}
 
 // for testing
 void MainWindow::fillPQList(std::vector<PQItem>& items)
