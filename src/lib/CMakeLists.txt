@@ -1,18 +1,19 @@
 cmake_minimum_required(VERSION 2.8)
-find_package(PkgConfig)
-pkg_check_modules(CURL REQUIRED libcurl)
-pkg_check_modules(SSL REQUIRED openssl)
+# find_package(PkgConfig)
+# pkg_check_modules(CURL REQUIRED libcurl)
+# pkg_check_modules(SSL REQUIRED openssl)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")
 
 add_subdirectory("support")
 add_subdirectory("parser")
+add_subdirectory("network")
 
 
-set(CURL_CLIENT_LIBRARIES
-    ${CURL_LIBRARIES}
-    ${SSL_LIBRARIES}
-)
+# set(CURL_CLIENT_LIBRARIES
+#     ${CURL_LIBRARIES}
+#     ${SSL_LIBRARIES}
+# )
 
 # project(curl_client_test)
 # add_executable(${PROJECT_NAME} network/curl_client_test.cc network/requestCurl.cc)
@@ -38,7 +39,7 @@ target_include_directories(${PROJECT_NAME}
                     ${CMAKE_SOURCE_DIR}/support
                     ${CMAKE_SOURCE_DIR}/)
 
-target_link_libraries(${PROJECT_NAME} parser support_json)
+target_link_libraries(${PROJECT_NAME} parser support_json networkCurl)
 
 project(soundcloud_client_test)
 add_executable(${PROJECT_NAME} client_test.cc network/requestCurl.cc)
