@@ -7,10 +7,11 @@ int main(int argc, char const *argv[])
     const std::string kClientID = "a5a98f5d549a83896d565f69eb644b65";
     soundcloud::Client client(kClientID);
 
-    auto tracks = client.getTracks(soundcloud::TracksQuery(
-                                                    soundcloud::kSOUNDCLOUD_BASE_URL,
-                                                    kClientID,
-                                                    "vocal"));
+
+    std::vector<std::string> taglist = {"vocal"};
+    soundcloud::TracksRequest tracksReq = client.getTracks("", taglist, 0);
+    auto tracks = tracksReq.next();
+
     for (const auto& track: tracks) {
         std::cout << track;
     }

@@ -3,6 +3,8 @@ find_package(PkgConfig)
 pkg_check_modules(CURL REQUIRED libcurl)
 pkg_check_modules(SSL REQUIRED openssl)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+
 add_subdirectory("support")
 add_subdirectory("parser")
 add_subdirectory("client")

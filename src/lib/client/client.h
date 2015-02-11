@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <types/track.h>
 #include "query.h"
+#include "tracks_request.h"
 
 namespace soundcloud {
 
@@ -15,7 +15,9 @@ public:
     Client(const std::string& clientID);
     virtual ~Client() {}
 
-    std::vector<Track> getTracks(const TracksQuery& query);
+    TracksRequest getTracks(const std::string& searchString,
+                            const std::vector<std::string>& tagList,
+                            const uint32_t limit);
 
 private:
 

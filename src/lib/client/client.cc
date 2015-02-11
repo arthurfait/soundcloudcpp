@@ -1,24 +1,24 @@
 #include "client.h"
-#include <network/requestCurl.h>
-#include <parser/parser.h>
+// #include <network/requestCurl.h>
+// #include <parser/parser.h>
+
 
 namespace soundcloud {
+
+const std::string kSOUNDCLOUD_BASE_URL = "https://api.soundcloud.com";
 
 Client::Client(const std::string& clientID)
     : m_clientID(clientID)
 {
 }
 
-std::vector<Track> Client::getTracks(const TracksQuery& query)
+TracksRequest Client::getTracks(const std::string& searchString,
+                                const std::vector<std::string>& tagList,
+                                const uint32_t limit)
 {
+    TracksQuery query(kSOUNDCLOUD_BASE_URL, m_clientID, 0, searchString, tagList);
     std::cout << query.getURLString() << std::endl;
-    requestCurl request(query.getURLString());
-    requestCurl::SSLOps ops;
-    ops.skip_peer_verification = true;
-    request.setSSLOptions(ops);
-    request.perform();
-    Parser parser;
-    return parser.parseTracks(request.getResponse());
+    return TracksRequest(query.getURLString());
 }
 
 }

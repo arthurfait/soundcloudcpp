@@ -14,26 +14,26 @@ GtkWidget *xpm_label_box(const gchar *xpm_filename,const gchar *label_text)
     /* Create box for image and label */
     box = gtk_hbox_new (FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 2);
-                                                                                                                                     
-    /* Now on to the image stuff */                                                                                                  
-    image = gtk_image_new_from_file (xpm_filename);                                                                                  
-                                                                                                                                     
-    /* Create a label for the button */                                                                                              
-    label = gtk_label_new (label_text);                                                                                              
-                                                                                                                                     
-    /* Pack the image and label into the box */                                                                                      
-    gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 3);                                                                      
-    gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 3);                                                                      
-                                                                                                                                     
-    gtk_widget_show (image);                                                                                                         
-    gtk_widget_show (label);                                                                                                         
-                                                                                                                                     
-    return box;                                                                                                                      
-}                                                                                                                                    
-                                                                                                                                     
 
-void connect_callback(GtkWidget *widget, gpointer data)                                                                              
-{                                                                                                                                    
+    /* Now on to the image stuff */
+    image = gtk_image_new_from_file (xpm_filename);
+
+    /* Create a label for the button */
+    label = gtk_label_new (label_text);
+
+    /* Pack the image and label into the box */
+    gtk_box_pack_start (GTK_BOX (box), image, FALSE, FALSE, 3);
+    gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 3);
+
+    gtk_widget_show (image);
+    gtk_widget_show (label);
+
+    return box;
+}
+
+
+void connect_callback(GtkWidget *widget, gpointer data)
+{
 
 }
 
@@ -143,26 +143,10 @@ void MainWindow::fillPQList(std::vector<PQItem>& items)
     }
 }
 
-//void MainWindow::fillPQList(const std::vector<MediaTypes::Track>& tracks)
-//{
-//    GtkTreeIter iter;
-//    for (auto &track: tracks) {
-//        gtk_list_store_append (playQueuestore, &iter);
-//        gtk_list_store_set (playQueuestore, &iter,
-//                          TITLE_COLUMN, track.metadata.title.c_str(),
-//                          ALBUM_COLUMN, track.metadata.album.c_str(),
-//                          ARTIST_COLUMN, track.metadata.artist.c_str(),
-//                          -1);
-//    }
-//}
-
-
 MainWindow::MainWindow()
 {
-    // TODO: add checks
     createWindow();
     createContent();
-//    usbPlayerClient.addObserver(this);
 }
 
 void MainWindow::createWindow()

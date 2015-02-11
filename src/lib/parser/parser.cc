@@ -16,6 +16,17 @@ Track trackFromJsonValue(Json::Value& value)
                 value["waveform_url"].asString());
 }
 
+void collectTracks(Json::Value& value, std::vector<Track>& tracks)
+{
+    for (size_t i=0; i< value.size(); ++i) {
+        if (value[i].type() == Json::objectValue) {
+            if (value[i]["kind"].asString() == "track") {
+                tracks.push_back(trackFromJsonValue(value[i]));
+            }
+        }
+    }
+}
+
 std::vector<Track> Parser::parseTracks(const std::string& jsonData)
 {
     std::vector<Track> tracks;
@@ -26,15 +37,20 @@ std::vector<Track> Parser::parseTracks(const std::string& jsonData)
                    << reader.getFormattedErrorMessages();
         return tracks;
     }
+
     if (root.type() == Json::arrayValue) {
-        for (int i=0; i< root.size(); ++i) {
-            if (root[i].type() == Json::objectValue) {
-                if (root[i]["kind"].asString() == "track") {
-                    tracks.push_back(trackFromJsonValue(root[i]));
-                }
+        collectTracks(root, tracks);
+    } else {
+        if (root.isMember("collection") && root["collection"].isArray()) {
+            collectTracks(root["collection"], tracks);
+            if (root.isMember("next_href")) {
+                m_lastNextHref = root["next_href"].asString();
+            } else {
+                m_lastNextHref.clear();
             }
         }
     }
+
     return tracks;
 }
 

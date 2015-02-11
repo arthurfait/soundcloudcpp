@@ -5,4 +5,5 @@ add_definitions(-std=c++11)
 include_directories(${CMAKE_SOURCE_DIR}/support
                     ${CMAKE_SOURCE_DIR}/)
 add_library(${PROJECT_NAME} STATIC query.cc
-                                    client.cc)
+                                    client.cc
+                                    tracks_request.cc)
