@@ -12,13 +12,14 @@ Client::Client(const std::string& clientID)
 {
 }
 
-TracksRequest Client::getTracks(const std::string& searchString,
+std::shared_ptr<TracksRequest> Client::getTracks(const std::string& searchString,
                                 const std::vector<std::string>& tagList,
                                 const uint32_t limit)
 {
     TracksQuery query(kSOUNDCLOUD_BASE_URL, m_clientID, 0, searchString, tagList);
     std::cout << query.getURLString() << std::endl;
-    return TracksRequest(query.getURLString());
+    return std::shared_ptr<TracksRequest>(new TracksRequest(query.getURLString()));
+    // return std::make_shared<TracksRequest>(TracksRequest(query.getURLString()));
 }
 
 }

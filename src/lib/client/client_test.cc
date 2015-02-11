@@ -9,12 +9,15 @@ int main(int argc, char const *argv[])
 
 
     std::vector<std::string> taglist = {"vocal"};
-    soundcloud::TracksRequest tracksReq = client.getTracks("", taglist, 0);
-    auto tracks = tracksReq.next();
+    auto tracksReq = client.getTracks("", taglist, 0);
 
-    for (const auto& track: tracks) {
-        std::cout << track;
-    }
+    do {
+        std::cout << "================== " << tracksReq->pageNumber() << " ================\n";
+        auto tracks = tracksReq->next();
+        for (const auto& track: tracks) {
+            std::cout << track;
+        }
+    } while (tracksReq->hasNext() && tracksReq->pageNumber() < 5);
 
 
     return 0;

@@ -15,7 +15,7 @@ public:
     Client(const std::string& clientID);
     virtual ~Client() {}
 
-    TracksRequest getTracks(const std::string& searchString,
+    std::shared_ptr<TracksRequest> getTracks(const std::string& searchString,
                             const std::vector<std::string>& tagList,
                             const uint32_t limit);
 
