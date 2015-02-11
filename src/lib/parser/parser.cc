@@ -18,7 +18,7 @@ Track trackFromJsonValue(Json::Value& value)
 
 void collectTracks(Json::Value& value, std::vector<Track>& tracks)
 {
-    for (size_t i=0; i< value.size(); ++i) {
+    for (unsigned i=0; i< value.size(); ++i) {
         if (value[i].type() == Json::objectValue) {
             if (value[i]["kind"].asString() == "track") {
                 tracks.push_back(trackFromJsonValue(value[i]));

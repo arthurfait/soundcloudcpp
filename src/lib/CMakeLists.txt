@@ -40,4 +40,4 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/client
 )
 add_executable(${PROJECT_NAME} client/client_test.cc network/requestCurl.cc)
-target_link_libraries(${PROJECT_NAME} support_json soundcloud_client parser ${CURL_CLIENT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}  soundcloud_client ${CURL_CLIENT_LIBRARIES})
