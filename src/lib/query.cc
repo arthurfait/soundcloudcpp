@@ -20,7 +20,6 @@ std::string TracksQuery::getURLString() const
         }
     }
     return urlString;
-    // return m_baseURL + "/tracks?client_id=" + m_clientID + "&limit=10&tag=" + m_tag;
 }
 
 

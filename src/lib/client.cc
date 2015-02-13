@@ -19,7 +19,6 @@ std::shared_ptr<TracksRequest> Client::getTracks(const std::string& searchString
     TracksQuery query(kSOUNDCLOUD_BASE_URL, m_clientID, 0, searchString, tagList);
     std::cout << query.getURLString() << std::endl;
     return std::shared_ptr<TracksRequest>(new TracksRequest(query.getURLString()));
-    // return std::make_shared<TracksRequest>(TracksRequest(query.getURLString()));
 }
 
 }
