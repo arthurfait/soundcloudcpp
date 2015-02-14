@@ -24,20 +24,30 @@ public:
         ePlayerPlaybackNormal
     };
 
-    enum State {
-        eStatePlaying,
-        eStatePaused,
-        eStateStopped,
-        eStateEos,
-        eStateError
-    };
+public:
+    class IPlayerObserver {
+    public:
+        virtual void onPlaying()  = 0;
+        virtual void onPaused()  = 0;
+        virtual void onStopped()  = 0;
+        virtual void onEos()  = 0;
+        virtual void onError(PlayerTypes::PlaybackErrorCode errorCode)  = 0;
+
+
+        virtual void onSeekStart() = 0;
+        virtual void onSeekDone() = 0;
+
+        virtual void onPositionUpdate(float position)  = 0;
+
+public:
+    // virtual destructor for interface
+    virtual ~PlayerObserver() {}
+};
+
 
     Player(PlayerPlaybackMode mode = ePlayerPlaybackNormal);
     ~Player();
 
-    void setStateChangeCallback(std::function<void(State)> callback) {
-        m_state_callback = callback;
-    }
 
     void load(const std::string& path);
     void play();
@@ -67,7 +77,7 @@ private:
     static bool initializeGStreamer();
     static bool gstInitialized;
 
-    std::function<void(State)> m_state_callback;
+    std::set<IPlayerObserver*> m_observers;
 
     PlayerPlaybackMode m_mode;
     GstElement *playbin2;

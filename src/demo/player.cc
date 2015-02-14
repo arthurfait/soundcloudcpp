@@ -5,12 +5,13 @@
   */
 
 
-
-#include "player.hpp"
 #include <cmath>
 #include <limits>
+#include "player.h"
+#include "log.h"
 
-namespace ant {
+
+namespace demo {
 
 static void error_cb(GstBus *, GstMessage *msg, Player *player);
 static void eos_cb(GstBus *, GstMessage *msg, Player *player);
@@ -84,22 +85,10 @@ Player::Player(PlayerPlaybackMode mode)
     g_signal_connect (G_OBJECT (bus), "message::error", (GCallback)error_cb, this);
     g_signal_connect (G_OBJECT (bus), "message::eos", (GCallback)eos_cb, this);
     g_signal_connect (G_OBJECT (bus), "message::state-changed", (GCallback)state_changed_cb, this);
-//    g_signal_connect (G_OBJECT (bus), "message::state-changed", (GCallback)state_changed_cb, this);
 
    gst_object_unref (bus);
 
-
 //   gst_object_unref(vis_plugin);
-//
-//   /* Start playing */
-//   ret = gst_element_set_state (data.playbin2, GST_STATE_PLAYING);
-//   if (ret == GST_STATE_CHANGE_FAILURE) {
-// g_printerr ("Unable to set the pipeline to the playing state.\n");
-// gst_object_unref (data.playbin2);
-// return -1;
-//   }
-
-
 }
 
 Player::~Player()
@@ -136,7 +125,6 @@ void Player::pause()
     ret = gst_element_set_state (playbin2, GST_STATE_PAUSED);
     if (ret == GST_STATE_CHANGE_FAILURE) {
         g_printerr ("Unable to set the pipeline to the playing state.\n");
-     //    throw
     }
     m_paused = true;
 }
@@ -317,4 +305,4 @@ static void state_changed_cb(GstBus*, GstMessage *msg, Player *player)
     player->handleStateCnanged(msg);
 }
 
-}
+} // demo
