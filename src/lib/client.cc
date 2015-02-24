@@ -21,4 +21,9 @@ std::shared_ptr<TracksRequest> Client::getTracks(const std::string& searchString
     return std::shared_ptr<TracksRequest>(new TracksRequest(query.getURLString()));
 }
 
+std::string Client::resolveTrackStream(const Track& track)
+{
+    return track.stream_url() + "?client_id=" +m_clientID;
+}
+
 }

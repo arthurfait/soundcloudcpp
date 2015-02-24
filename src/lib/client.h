@@ -19,6 +19,8 @@ public:
                             const std::vector<std::string>& tagList,
                             const uint32_t limit);
 
+    std::string resolveTrackStream(const Track& track);
+
 private:
 
     std::string m_clientID;

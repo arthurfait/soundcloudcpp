@@ -12,6 +12,7 @@
 // #include <gst/interfaces/xoverlay.h>
 #include <string>
 #include <functional>
+#include <set>
 // #include "log.hpp"
 
 namespace demo {
@@ -31,7 +32,7 @@ public:
         virtual void onPaused()  = 0;
         virtual void onStopped()  = 0;
         virtual void onEos()  = 0;
-        virtual void onError(PlayerTypes::PlaybackErrorCode errorCode)  = 0;
+        virtual void onError(int errorCode)  = 0;
 
 
         virtual void onSeekStart() = 0;
@@ -39,10 +40,7 @@ public:
 
         virtual void onPositionUpdate(float position)  = 0;
 
-public:
-    // virtual destructor for interface
-    virtual ~PlayerObserver() {}
-};
+    };
 
 
     Player(PlayerPlaybackMode mode = ePlayerPlaybackNormal);

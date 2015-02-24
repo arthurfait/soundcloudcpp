@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <client.h>
+#include "player.h"
 
 class MainWindow
 {
@@ -29,6 +30,8 @@ public:
 
     void updateProgress();
 
+
+    void OnActivate(int index);
 // for testing
     void fillPQList(std::vector<PQItem>& items);
 
@@ -55,6 +58,7 @@ private:
     // cached
     uint32_t m_cachedDuration;
     uint32_t m_cachedPosition;
+    std::vector<soundcloud::Track> m_currentTrackList;
 
     // UI
     // control
@@ -77,6 +81,7 @@ private:
 
     GtkWidget *vbox;
 
+    demo::Player m_player;
 
 
 };

@@ -99,11 +99,11 @@ Player::~Player()
 
 void Player::load(const std::string& path)
 {
-    gchar* uri = g_filename_to_uri(path.c_str(), NULL, NULL);
+    // gchar* uri = g_filename_to_uri(path.c_str(), NULL, NULL);
 //  gst_uri_is_valid()
     stop(); // I dont know but this should work
-    g_object_set(playbin2, "uri", uri, NULL);
-    g_free(uri);
+    g_object_set(playbin2, "uri", path.c_str(), NULL);
+    // g_free(uri);
 }
 
 void Player::play()
@@ -223,12 +223,12 @@ void Player::setVolume(uint8_t newVol)
 void Player::handleEos()
 {
     m_paused = true;
-    m_state_callback(eStateEos);
+    // m_state_callback(eStateEos);
 }
 
 void Player::handleError()
 {
-    m_state_callback(eStateError);
+    // m_state_callback(eStateError);
 }
 
 void Player::handleStateCnanged(GstMessage *msg)
@@ -245,16 +245,16 @@ void Player::handleStateCnanged(GstMessage *msg)
             if (state == GST_STATE_PLAYING) {
                 if (m_paused) {
                     m_paused = false;
-                    m_state_callback(eStatePlaying);
+                    // m_state_callback(eStatePlaying);
                 }
             } else if (state == GST_STATE_PAUSED ) {
                 if (m_paused) {
                     m_paused = true;
-                    m_state_callback(eStatePaused);
+                    // m_state_callback(eStatePaused);
                 }
             } else {
                 m_paused = true;
-                m_state_callback(eStatePaused);
+                // m_state_callback(eStatePaused);
 
             }
 

@@ -43,9 +43,19 @@ void next_callback(GtkWidget *widget, gpointer data)
 
 static void activate_cb (GtkTreeView * tree,
                          GtkTreePath * path,
-                         GtkTreeViewColumn * col, MainWindow * model) {
+                         GtkTreeViewColumn * col, MainWindow * that) {
      int row = gtk_tree_path_get_indices (path)[0];
-     std::cout << "cliecked " << row << "\n";
+     std::cout << "cliecked: " << row << "\n";
+    that->OnActivate(row);
+
+}
+
+void MainWindow::OnActivate(int index)
+{
+    std::cout << "cliecked " << index << "\n" << m_currentTrackList[index].title() << "\n";
+    std::cout << "url: " << m_client.resolveTrackStream(m_currentTrackList[index]) << "\n";
+    m_player.load(m_client.resolveTrackStream(m_currentTrackList[index]));
+    m_player.play();
 }
 
 // for testing
@@ -65,6 +75,7 @@ void MainWindow::fillPQList(std::vector<PQItem>& items)
 void MainWindow::fillPQList(const std::vector<soundcloud::Track>& tracks)
 {
     GtkTreeIter iter;
+    m_currentTrackList = tracks;
     for (auto &track: tracks) {
         gtk_list_store_append (playQueuestore, &iter);
         gtk_list_store_set (playQueuestore, &iter,
@@ -79,6 +90,7 @@ const std::string kClientID = "a5a98f5d549a83896d565f69eb644b65";
 
 MainWindow::MainWindow()
     : m_client(kClientID)
+    , m_player(demo::Player::ePlayerPlaybackBackground)
 {
     createWindow();
     createContent();
