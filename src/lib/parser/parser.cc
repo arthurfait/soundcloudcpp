@@ -3,6 +3,17 @@
 
 namespace soundcloud {
 
+User userFromJsonValue(Json::Value& value)
+{
+    return User(
+                value["username"].asString(),
+                value["permalink_url"].asString(),
+                value["avatar_url"].asString(),
+                value["uri"].asString(),
+                value["id"].asUInt64()
+        );
+}
+
 Track trackFromJsonValue(Json::Value& value)
 {
     return Track(
@@ -13,7 +24,8 @@ Track trackFromJsonValue(Json::Value& value)
                 value["stream_url"].asString(),
                 value["license"].asString(),
                 value["artwork_url"].asString(),
-                value["waveform_url"].asString());
+                value["waveform_url"].asString(),
+                userFromJsonValue(value["user"]));
 }
 
 void collectTracks(Json::Value& value, std::vector<Track>& tracks)

@@ -41,6 +41,14 @@ void next_callback(GtkWidget *widget, gpointer data)
 
 }
 
+void page_nextButtonCB(GtkWidget *widget, gpointer data)
+{
+    MainWindow* that = reinterpret_cast<MainWindow*>(data);
+    if (that)
+        that->nextPage();
+}
+
+
 static void activate_cb (GtkTreeView * tree,
                          GtkTreePath * path,
                          GtkTreeViewColumn * col, MainWindow * that) {
@@ -74,6 +82,7 @@ void MainWindow::fillPQList(std::vector<PQItem>& items)
 
 void MainWindow::fillPQList(const std::vector<soundcloud::Track>& tracks)
 {
+    gtk_list_store_clear(playQueuestore);
     GtkTreeIter iter;
     m_currentTrackList = tracks;
     for (auto &track: tracks) {
@@ -81,7 +90,7 @@ void MainWindow::fillPQList(const std::vector<soundcloud::Track>& tracks)
         gtk_list_store_set (playQueuestore, &iter,
                           TITLE_COLUMN, track.title().c_str(),
                           ALBUM_COLUMN, track.genre().c_str(),
-                          ARTIST_COLUMN, track.stream_url().c_str(),
+                          ARTIST_COLUMN, track.user().username().c_str(),
                           -1);
     }
 }
@@ -100,7 +109,8 @@ void MainWindow::createWindow()
 {
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
-    gtk_window_set_title(GTK_WINDOW(window), "Pixmap'd Buttons!");
+    gtk_window_set_title(GTK_WINDOW(window), "soundcloud test");
+    gtk_window_set_default_size(GTK_WINDOW(window), 1280, 800);
 
     /* It's a good idea to do this for all windows. */
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -131,6 +141,9 @@ void MainWindow::createContent()
     prevButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PREVIOUS);
     g_signal_connect(prevButton, "clicked", G_CALLBACK(prev_callback),(gpointer) nullptr);
 
+    page_nextButton = gtk_button_new_with_label(">>");
+    g_signal_connect(page_nextButton, "clicked", G_CALLBACK(page_nextButtonCB),(gpointer) this);
+
     box = gtk_hbox_new (FALSE, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 2);
     gtk_box_pack_start (GTK_BOX (box), connectButton, FALSE, FALSE, 3);
@@ -139,6 +152,7 @@ void MainWindow::createContent()
     gtk_box_pack_start (GTK_BOX (box), stopButton, FALSE, FALSE, 3);
     gtk_box_pack_start (GTK_BOX (box), prevButton, FALSE, FALSE, 3);
     gtk_box_pack_start (GTK_BOX (box), nextButton, FALSE, FALSE, 3);
+    gtk_box_pack_start (GTK_BOX (box), page_nextButton, FALSE, FALSE, 3);
 
     gtk_widget_show(connectButton);
     gtk_widget_show(playButton);
@@ -146,6 +160,7 @@ void MainWindow::createContent()
     gtk_widget_show(stopButton);
     gtk_widget_show(nextButton);
     gtk_widget_show(prevButton);
+    gtk_widget_show(page_nextButton);
 
     progress = gtk_progress_bar_new();
 
@@ -224,12 +239,14 @@ void MainWindow::updateProgress()
 
 void MainWindow::OnConnect()
 {
-    std::vector<std::string> taglist = {"vocal"};
-    auto tracksReq = m_client.getTracks("", taglist, 0);
-    auto tracks = tracksReq->next();
-    std::cout << "================== " << tracksReq->pageNumber() << " ================\n";
-    // for (const auto& track: tracks) {
-    //     std::cout << track;
-    // }
+    std::vector<std::string> taglist = {"female"};
+    m_currentRequest = m_client.getTracks("", taglist, 30);
+    auto tracks = m_currentRequest->next();
+    fillPQList(tracks);
+}
+
+void MainWindow::nextPage()
+{
+    auto tracks = m_currentRequest->next();
     fillPQList(tracks);
 }

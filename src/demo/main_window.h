@@ -37,7 +37,7 @@ public:
 
 
     void OnConnect();
-
+    void nextPage();
 
 private:
     enum {
@@ -54,11 +54,13 @@ private:
 
     //
     soundcloud::Client m_client;
+    std::shared_ptr<soundcloud::TracksRequest> m_currentRequest;
 
     // cached
     uint32_t m_cachedDuration;
     uint32_t m_cachedPosition;
     std::vector<soundcloud::Track> m_currentTrackList;
+
 
     // UI
     // control
@@ -69,6 +71,7 @@ private:
     GtkWidget *stopButton;
     GtkWidget *nextButton;
     GtkWidget *prevButton;
+    GtkWidget *page_nextButton;
     GtkWidget *box;
     GtkWidget *progress;
 

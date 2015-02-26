@@ -8,7 +8,8 @@ std::string TracksQuery::getURLString() const
 {
     assert(!m_baseURL.empty());
     assert(!m_clientID.empty());
-    std::string urlString = m_baseURL + "/tracks?client_id=" + m_clientID +"&limit=10&linked_partitioning=1";
+    assert(m_limit);
+    std::string urlString = m_baseURL + "/tracks?client_id=" + m_clientID +"&limit="+ std::to_string(m_limit) + "&linked_partitioning=1";
     // if limit
     if (m_tagList.size()) {
         urlString.append("&tag=");

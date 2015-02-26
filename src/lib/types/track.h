@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 
+#include "user.h"
+
 namespace soundcloud {
 
 class Track
@@ -17,7 +19,8 @@ public:
         const std::string& stream_url,
         const std::string& license,
         const std::string& artwork_url,
-        const std::string& waveform_url)
+        const std::string& waveform_url,
+        const User& user)
         : m_title(title)
         , m_description(description)
         , m_genre(genre)
@@ -26,6 +29,7 @@ public:
         , m_license(license)
         , m_artwork_url(artwork_url)
         , m_waveform_url(waveform_url)
+        , m_user(user)
     {
     }
 
@@ -63,6 +67,10 @@ public:
         return m_waveform_url;
     }
 
+    const User& user() const {
+        return m_user;
+    }
+
 private:
     std::string m_title;
     std::string m_description;
@@ -72,6 +80,7 @@ private:
     std::string m_license;
     std::string m_artwork_url;
     std::string m_waveform_url;
+    User m_user;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Track& track)
@@ -84,7 +93,8 @@ inline std::ostream& operator<<(std::ostream& os, const Track& track)
         << "\tstream_url: " << track.stream_url() << std::endl
         << "\tlicense: " << track.license() << std::endl
         << "\tartwork_url: " << track.artwork_url() << std::endl
-        << "\twaveform_url: " << track.waveform_url() << std::endl;
+        << "\twaveform_url: " << track.waveform_url() << std::endl
+        << "\tuser: " << track.user() << std::endl;
   return os;
 }
 
