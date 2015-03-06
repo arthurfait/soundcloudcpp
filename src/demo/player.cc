@@ -205,18 +205,18 @@ double Player::getDuration()
     return static_cast<double>(timeLength) / GST_SECOND;
 }
 
-uint8_t Player::getVolume()
+gdouble Player::getVolume()
 {
     gdouble fVolume = 0.0;
     g_object_get(playbin2, "volume", &fVolume, NULL);
-    return static_cast<uint8_t>(fVolume*100.0);
+    return (fVolume*100.0);
 }
 
-void Player::setVolume(uint8_t newVol)
+void Player::setVolume(gdouble newVol)
 {
-    if (newVol>100)
-        newVol = 100;
-    gdouble fVolume = static_cast<float>(newVol)/100.0;
+    if (newVol>100.0)
+        newVol = 100.0;
+    gdouble fVolume = (newVol)/100.0;
     g_object_set(playbin2, "volume", fVolume, NULL);
 }
 

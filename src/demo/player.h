@@ -61,8 +61,8 @@ public:
     double getPosition();
     double getDuration();
 
-    uint8_t getVolume();
-    void setVolume(uint8_t newVol);
+    gdouble getVolume();
+    void setVolume(gdouble newVol);
 
     // void setX11Id(Window wind);
 

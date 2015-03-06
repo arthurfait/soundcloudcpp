@@ -32,6 +32,16 @@ public:
 
 
     void OnActivate(int index);
+
+
+// button handlers
+    void OnPlay();
+    void OnPause();
+    void OnStop();
+    void OnPrev();
+    void OnNext();
+    void OnVolume(gdouble volume);
+
 // for testing
     void fillPQList(std::vector<PQItem>& items);
 
@@ -65,13 +75,14 @@ private:
     // UI
     // control
     GtkWidget *window;
-    GtkWidget *connectButton;
+//    GtkWidget *connectButton;
     GtkWidget *playButton;
     GtkWidget *pauseButton;
     GtkWidget *stopButton;
     GtkWidget *nextButton;
     GtkWidget *prevButton;
     GtkWidget *page_nextButton;
+    GtkWidget *volumeSlider;
     GtkWidget *box;
     GtkWidget *progress;
 
