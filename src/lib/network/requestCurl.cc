@@ -67,15 +67,21 @@ void requestCurl::setSSLOptions(const SSLOps& ops)
     }
 }
 
-void requestCurl::perform()
+bool requestCurl::perform()
 {
+    bool success = false;
     if (m_curlHandle) {
         CURLcode res;
         m_stringData.clear();
         res = curl_easy_perform(m_curlHandle);
-        if(res != CURLE_OK)
+        if (res == CURLE_OK) {
+            success = true;
+        } else {
             fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+        }
+
     }
+    return success;
 }
 
 std::string requestCurl::getResponse()

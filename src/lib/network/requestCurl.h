@@ -23,7 +23,7 @@ public:
 
     void setSSLOptions(const SSLOps& ops);
 
-    void perform();
+    bool perform();
     std::string getResponse();
 
 private:
