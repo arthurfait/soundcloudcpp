@@ -97,6 +97,11 @@ Player::~Player()
         gst_object_unref (playbin2);
 }
 
+void Player::addObserver(IPlayerObserver* observer)
+{
+    m_observers.insert(observer);
+}
+
 void Player::load(const std::string& path)
 {
     // gchar* uri = g_filename_to_uri(path.c_str(), NULL, NULL);
@@ -223,11 +228,15 @@ void Player::setVolume(gdouble newVol)
 void Player::handleEos()
 {
     m_paused = true;
+    for (auto& observer : m_observers)
+        observer->onEos();
     // m_state_callback(eStateEos);
 }
 
 void Player::handleError()
 {
+    for (auto& observer : m_observers)
+        observer->onError(0);
     // m_state_callback(eStateError);
 }
 
@@ -245,15 +254,21 @@ void Player::handleStateCnanged(GstMessage *msg)
             if (state == GST_STATE_PLAYING) {
                 if (m_paused) {
                     m_paused = false;
+                    for (auto& observer : m_observers)
+                        observer->onPlaying();
                     // m_state_callback(eStatePlaying);
                 }
             } else if (state == GST_STATE_PAUSED ) {
                 if (m_paused) {
                     m_paused = true;
+                    for (auto& observer : m_observers)
+                        observer->onPaused();
                     // m_state_callback(eStatePaused);
                 }
             } else {
                 m_paused = true;
+                for (auto& observer : m_observers)
+                    observer->onPaused();
                 // m_state_callback(eStatePaused);
 
             }

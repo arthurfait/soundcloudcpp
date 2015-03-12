@@ -23,7 +23,9 @@ add_subdirectory("network")
 project(soundcloud_client)
 add_library(${PROJECT_NAME} STATIC query.cc
                                     client.cc
-                                    tracks_request.cc)
+                                    tracks_request.cc
+                                    types/user.h
+                                    types/track.h)
 
 target_include_directories(${PROJECT_NAME}
                     PUBLIC

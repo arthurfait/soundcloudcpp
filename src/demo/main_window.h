@@ -13,7 +13,7 @@
 #include <client.h>
 #include "player.h"
 
-class MainWindow
+class MainWindow: public demo::Player::IPlayerObserver
 {
 public:
     struct PQItem {
@@ -29,7 +29,7 @@ public:
     void show();
 
     void updateProgress();
-
+    void handleUpdateTimer();
 
     void OnActivate(int index);
 
@@ -48,6 +48,14 @@ public:
 
     void OnConnect();
     void nextPage();
+
+    virtual void onPlaying()  override;
+    virtual void onPaused()  override;
+    virtual void onStopped()  override;
+    virtual void onEos()  override;
+    virtual void onError(int errorCode)  override;
+    virtual void onSeekStart() override;
+    virtual void onSeekDone() override;
 
 private:
     enum {
@@ -72,6 +80,9 @@ private:
     std::vector<soundcloud::Track> m_currentTrackList;
 
 
+    //
+    guint m_timerHandle;
+
     // UI
     // control
     GtkWidget *window;
@@ -94,10 +105,7 @@ private:
     GtkTreeViewColumn *column;
 
     GtkWidget *vbox;
-
     demo::Player m_player;
-
-
 };
 
 

@@ -83,6 +83,14 @@ static void activate_cb (GtkTreeView * tree,
     that->OnActivate(row);
 }
 
+static gboolean updateTimerCB(gpointer data)
+{
+    MainWindow* that = reinterpret_cast<MainWindow*>(data);
+    if (that)
+        that->handleUpdateTimer();
+    return TRUE;
+}
+
 void MainWindow::OnActivate(int index)
 {
     std::cout << "url: " << m_client.resolveTrackStream(m_currentTrackList[index]) << "\n";
@@ -154,8 +162,10 @@ const std::string kClientID = "a5a98f5d549a83896d565f69eb644b65";
 
 MainWindow::MainWindow()
     : m_client(kClientID)
+    , m_timerHandle(0)
     , m_player(demo::Player::ePlayerPlaybackBackground)
 {
+    m_player.addObserver(this);
     createWindow();
     createContent();
 }
@@ -199,7 +209,8 @@ void MainWindow::createContent()
     page_nextButton = gtk_button_new_with_label(">>");
     g_signal_connect(page_nextButton, "clicked", G_CALLBACK(page_nextButtonCB),(gpointer) this);
 
-    volumeSlider = gtk_hscale_new_with_range(0,100,0.1);
+    volumeSlider = gtk_hscale_new_with_range(0, 100, 0.1);
+    gtk_range_set_value((GtkRange*)volumeSlider, 80);
     g_signal_connect(volumeSlider, "change-value", G_CALLBACK(volume_chnagedCB),(gpointer) this);
 
 
@@ -300,6 +311,13 @@ void MainWindow::updateProgress()
     gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress),buff);
 }
 
+void MainWindow::handleUpdateTimer()
+{
+    m_cachedPosition = m_player.getPosition();
+    updateProgress();
+}
+
+
 
 void MainWindow::OnConnect()
 {
@@ -314,3 +332,47 @@ void MainWindow::nextPage()
     auto tracks = m_currentRequest->next();
     fillPQList(tracks);
 }
+
+void MainWindow::onPlaying()
+{
+    m_cachedDuration = m_player.getDuration();
+    if (m_timerHandle) {
+        g_source_remove(m_timerHandle);
+    }
+    g_timeout_add(1000, updateTimerCB, this);
+}
+
+void MainWindow::onPaused()
+{
+    g_source_remove(m_timerHandle);
+    m_timerHandle = 0;
+}
+
+void MainWindow::onStopped()
+{
+
+}
+
+void MainWindow::onEos()
+{
+    g_source_remove(m_timerHandle);
+    m_timerHandle = 0;
+}
+
+void MainWindow::onError(int errorCode)
+{
+    g_source_remove(m_timerHandle);
+    m_timerHandle = 0;
+}
+
+void MainWindow::onSeekStart()
+{
+
+}
+
+void MainWindow::onSeekDone()
+{
+
+}
+
+

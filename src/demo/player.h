@@ -34,18 +34,15 @@ public:
         virtual void onEos()  = 0;
         virtual void onError(int errorCode)  = 0;
 
-
         virtual void onSeekStart() = 0;
         virtual void onSeekDone() = 0;
-
-        virtual void onPositionUpdate(float position)  = 0;
-
     };
 
 
-    Player(PlayerPlaybackMode mode = ePlayerPlaybackNormal);
+    Player(PlayerPlaybackMode mode = ePlayerPlaybackBackground);
     ~Player();
 
+    void addObserver(IPlayerObserver* observer);
 
     void load(const std::string& path);
     void play();
