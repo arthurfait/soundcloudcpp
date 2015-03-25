@@ -42,6 +42,7 @@ requestCurl::~requestCurl()
         curl_easy_cleanup(m_curlHandle);
         m_curlHandle = nullptr;
     }
+    // TODO: this part is about ot think
     if (--s_objectCount == 0) {
         curl_global_cleanup();
         s_initialized = false;
