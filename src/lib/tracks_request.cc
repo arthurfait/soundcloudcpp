@@ -27,7 +27,8 @@ TracksRequest::TracksRequest(const std::string& query)
 TracksRequest::~TracksRequest()
 {}
 
-bool TracksRequest::hasNext() {
+bool TracksRequest::hasNext()
+{
     return !m_parser->lastNextHref().empty();
 }
 
