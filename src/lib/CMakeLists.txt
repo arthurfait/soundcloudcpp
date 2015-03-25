@@ -24,6 +24,7 @@ project(soundcloud_client)
 add_library(${PROJECT_NAME} STATIC query.cc
                                     client.cc
                                     tracks_request.cc
+                                    auth.cc
                                     types/user.h
                                     types/track.h)
 
