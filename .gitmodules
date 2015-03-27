@@ -1,0 +1,3 @@
+[submodule "src/lib/support/uriparser"]
+	path = src/lib/support/uriparser
+	url = git@github.com:arthurfait/uri-parser.git
