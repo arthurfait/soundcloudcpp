@@ -19,7 +19,7 @@ std::string AuthDelegate::getAuthUrl()
 {
 
     const std::string url = "https://soundcloud.com/connect?client_id="+m_clientId+
-    "&rediruri=dssd"+
+    "&rediruri=https://developers.soundcloud.com/callback.html"+
     "&response_type=code"+
     "&scope=non-expiring";
 
