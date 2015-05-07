@@ -9,7 +9,8 @@ int main(int argc, char const *argv[])
 
 
     std::vector<std::string> taglist = {"vocal"};
-    auto tracksReq = client.getTracks("", taglist, 0);
+    std::vector<std::string> genres = {"rap"};
+    auto tracksReq = client.getTracks("", taglist, genres, 10);
 
     do {
         std::cout << "================== " << tracksReq->pageNumber() << " ================\n";

@@ -31,7 +31,8 @@ public:
                 const std::string clientID,
                 const uint32_t limit,
                 const std::string& searchString,
-                const std::vector<std::string>& tagList
+                const std::vector<std::string>& tagList,
+                const std::vector<std::string>& genres
 
                 // filter  enumeration (all,public,private)
                 // bpm[from]   number  return tracks with at least this bpm value
@@ -39,6 +40,7 @@ public:
         : Query(baseURL, clientID, limit)
         , m_searchString(searchString)
         , m_tagList(tagList)
+        , m_genres(genres)
     {}
 
     virtual ~TracksQuery() {}
@@ -48,6 +50,7 @@ protected:
     // TODO: add all search ops
     std::string m_searchString;
     std::vector<std::string> m_tagList;
+    std::vector<std::string> m_genres;
 };
 
 } // soundcloud
