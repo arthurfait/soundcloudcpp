@@ -17,9 +17,12 @@ public:
 
     std::shared_ptr<TracksRequest> getTracks(const std::string& searchString,
                             const std::vector<std::string>& tagList,
+                            const std::vector<std::string>& genres,
                             const uint32_t limit);
 
     std::string resolveTrackStream(const Track& track);
+
+    std::string resolveUrl(const std::string& url);
 
 private:
 

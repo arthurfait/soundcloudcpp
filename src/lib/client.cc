@@ -14,9 +14,10 @@ Client::Client(const std::string& clientID)
 
 std::shared_ptr<TracksRequest> Client::getTracks(const std::string& searchString,
                                 const std::vector<std::string>& tagList,
+                                const std::vector<std::string>& genres,
                                 const uint32_t limit)
 {
-    TracksQuery query(kSOUNDCLOUD_BASE_URL, m_clientID, limit, searchString, tagList);
+    TracksQuery query(kSOUNDCLOUD_BASE_URL, m_clientID, limit, searchString, tagList, genres);
     std::cout << query.getURLString() << std::endl;
     return std::shared_ptr<TracksRequest>(new TracksRequest(query.getURLString()));
 }

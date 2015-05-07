@@ -18,6 +18,7 @@
 
 gboolean connect_timeoutCB(gpointer data)
 {
+    printf("conn?\n");
     MainWindow* that = reinterpret_cast<MainWindow*>(data);
     if (that)
         that->OnConnect();
@@ -165,6 +166,7 @@ MainWindow::MainWindow()
     , m_timerHandle(0)
     , m_player(demo::Player::ePlayerPlaybackBackground)
 {
+    printf("conn\n");
     m_player.addObserver(this);
     createWindow();
     createContent();
@@ -224,7 +226,6 @@ void MainWindow::createContent()
     gtk_box_pack_start (GTK_BOX (box), nextButton, FALSE, FALSE, 3);
     gtk_box_pack_start (GTK_BOX (box), page_nextButton, FALSE, FALSE, 3);
     gtk_box_pack_end (GTK_BOX (box), volumeSlider, TRUE, TRUE, 3);
-
 
 //    gtk_widget_show(connectButton);
     gtk_widget_show(playButton);
@@ -293,7 +294,9 @@ void MainWindow::createContent()
 
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
+    printf("conn\n");
     g_timeout_add(500, connect_timeoutCB, this);
+    printf("conn\n");
 }
 
 void MainWindow::show()
@@ -321,10 +324,13 @@ void MainWindow::handleUpdateTimer()
 
 void MainWindow::OnConnect()
 {
-    std::vector<std::string> taglist = {"female"};
-    m_currentRequest = m_client.getTracks("Selena", taglist, 30);
+    std::vector<std::string> taglist = {};
+    std::vector<std::string> genres = {"Audiobooks"};
+
+    m_currentRequest = m_client.getTracks("", taglist, genres, 30);
     auto tracks = m_currentRequest->next();
     fillPQList(tracks);
+    // https://soundcloud.com/luca-ao-sora/aldnoah-zero-opfandub-espanol-latino-heavenly-blue-kalafina
 }
 
 void MainWindow::nextPage()
