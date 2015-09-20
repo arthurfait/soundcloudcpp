@@ -28,6 +28,7 @@ public:
     void createContent();
 
     // void show();
+    void OnEntryChanged();
     void OnActivate(int index);
     void OnConnect();
 
@@ -51,10 +52,15 @@ private:
 private:
     //
     soundcloud::Client m_client;
+
+    std::string m_searchString = "@kpop";
     std::shared_ptr<soundcloud::TracksRequest> m_currentRequest;
 
     // cached
     std::vector<soundcloud::Track> m_currentTrackList;
+
+    // timers
+    guint m_searchTimer = 0;
 
     // UI
     GtkWidget *entry;

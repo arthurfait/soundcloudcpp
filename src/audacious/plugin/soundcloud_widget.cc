@@ -21,10 +21,17 @@ extern "C" {
 
 }
 
+static void entry_cb (GtkEntry *entry, void *data)
+{
+    (void)entry;
+    SoundCloudWidget* that = reinterpret_cast<SoundCloudWidget*>(data);
+    if (that)
+        that->OnEntryChanged();
+}
+
 
 static gboolean connect_timeoutCB(gpointer data)
 {
-    printf("conn?\n");
     SoundCloudWidget* that = reinterpret_cast<SoundCloudWidget*>(data);
     if (that)
         that->OnConnect();
@@ -46,6 +53,17 @@ static void activate_cb (GtkTreeView * tree,
     that->OnActivate(row);
 }
 
+void SoundCloudWidget::OnEntryChanged()
+{
+    const char* searchCString = gtk_entry_get_text ((GtkEntry*)entry);
+    if (searchCString && strlen(searchCString)) {
+        if (m_searchTimer) {
+            g_source_remove(m_searchTimer);
+        }
+        m_searchString.assign(searchCString);
+        m_searchTimer = g_timeout_add(500, connect_timeoutCB, this);
+    } 
+}
 
 void SoundCloudWidget::OnActivate(int index)
 {
@@ -90,8 +108,6 @@ const std::string kClientID = "a5a98f5d549a83896d565f69eb644b65";
 SoundCloudWidget::SoundCloudWidget()
     : m_client(kClientID)
 {
-    printf("conn\n");
-    // createWindow();
     createContent();
 }
 
@@ -104,7 +120,10 @@ void SoundCloudWidget::createContent()
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
     gtk_entry_set_placeholder_text ((GtkEntry *) entry, "Search SoundCloud");
+    gtk_entry_set_text((GtkEntry *) entry, m_searchString.c_str());
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
+    g_signal_connect (entry, "changed", (GCallback) entry_cb, (gpointer)this);
+    // g_signal_connect (entry, "activate", (GCallback) action_play, (gpointer)this);
 
     page_nextButton = gtk_button_new_with_label("show next 30 tracks");
     g_signal_connect(page_nextButton, "clicked", G_CALLBACK(page_nextButtonCB),(gpointer) this);
@@ -170,15 +189,25 @@ void SoundCloudWidget::createContent()
 
     gtk_widget_show(vbox);
 
-    g_timeout_add(500, connect_timeoutCB, this);
+    m_searchTimer = g_timeout_add(500, connect_timeoutCB, this);
 }
 
 void SoundCloudWidget::OnConnect()
 {
+    m_searchTimer = 0;
     std::vector<std::string> taglist = {};
-    std::vector<std::string> genres = {"KPOP"};
+    std::vector<std::string> genres = {};
 
-    m_currentRequest = m_client.getTracks("", taglist, genres, 30);
+    std::string query = "";
+    if (m_searchString[0] == '@') {
+        genres.push_back(m_searchString.substr(1));
+    } else {
+        query = m_searchString.substr(1);
+    }
+
+    std::cout << query << " -- " << genres[0];
+
+    m_currentRequest = m_client.getTracks(query, taglist, genres, 30);
     auto tracks = m_currentRequest->next();
     fillPQList(tracks);
 }
