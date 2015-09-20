@@ -27,7 +27,7 @@ Player::Player(PlayerPlaybackMode mode)
     , m_duration(0.0)
 {
     initializeGStreamer();
-    playbin2 = gst_element_factory_make ("playbin2", "playbin2");
+    playbin2 = gst_element_factory_make ("playbin", "playbin");
     if (!playbin2) {
         g_printerr ("Not all elements could be created.\n");
         return;
@@ -201,7 +201,7 @@ double Player::getDuration()
     GstFormat timeFormat = GST_FORMAT_TIME;
     gint64 timeLength = 0;
 
-    bool failure = !gst_element_query_duration(playbin2, &timeFormat, &timeLength) || timeFormat != GST_FORMAT_TIME || static_cast<guint64>(timeLength) == GST_CLOCK_TIME_NONE;
+    bool failure = !gst_element_query_duration(playbin2, timeFormat, &timeLength) || timeFormat != GST_FORMAT_TIME || static_cast<guint64>(timeLength) == GST_CLOCK_TIME_NONE;
     if (failure) {
          log_warning("Time duration query failed for");
          return std::numeric_limits<float>::infinity();

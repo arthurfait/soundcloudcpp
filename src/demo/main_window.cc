@@ -325,7 +325,7 @@ void MainWindow::handleUpdateTimer()
 void MainWindow::OnConnect()
 {
     std::vector<std::string> taglist = {};
-    std::vector<std::string> genres = {"Audiobooks"};
+    std::vector<std::string> genres = {"KPOP"};
 
     m_currentRequest = m_client.getTracks("", taglist, genres, 30);
     auto tracks = m_currentRequest->next();

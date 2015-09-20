@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 find_package(PkgConfig)
 pkg_check_modules(GTK REQUIRED gtk+-2.0)
-pkg_check_modules(GSTREAMER010 REQUIRED gstreamer-0.10)
+pkg_check_modules(GSTREAMER010 REQUIRED gstreamer-1.0)
 
 
 add_definitions(-std=c++11)
