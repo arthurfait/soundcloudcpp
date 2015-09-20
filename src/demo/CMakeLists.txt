@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 find_package(PkgConfig)
-pkg_check_modules(GTK REQUIRED gtk+-2.0)
+pkg_check_modules(GTK REQUIRED gtk+-3.0)
 pkg_check_modules(GSTREAMER010 REQUIRED gstreamer-1.0)
 
 
-add_definitions(-std=c++11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_definitions(-Wno-ignored-qualifiers)
 
 project(demoApp)

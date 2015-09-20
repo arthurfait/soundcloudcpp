@@ -193,30 +193,30 @@ void MainWindow::createContent()
 //    gtk_toggle_button_set_mode (GTK_TOGGLE_BUTTON(connectButton), TRUE);
 //    g_signal_connect(connectButton, "toggled", G_CALLBACK(connect_callback),(gpointer) this);
 
-    playButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PLAY);
+    playButton = gtk_button_new_with_label("play");
     g_signal_connect(playButton, "clicked", G_CALLBACK(play_callback),(gpointer) this);
 
-    pauseButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PAUSE);
+    pauseButton = gtk_button_new_with_label("pause");
     g_signal_connect(pauseButton, "clicked", G_CALLBACK(pause_callback),(gpointer) this);
 
-    stopButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_STOP);
+    stopButton = gtk_button_new_with_label("stop");
     g_signal_connect(stopButton, "clicked", G_CALLBACK(stop_callback),(gpointer) this);
 
-    nextButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_NEXT);
+    nextButton = gtk_button_new_with_label("next");
     g_signal_connect(nextButton, "clicked", G_CALLBACK(next_callback),(gpointer) this);
 
-    prevButton = gtk_button_new_from_stock(GTK_STOCK_MEDIA_PREVIOUS);
+    prevButton = gtk_button_new_with_label("prev");
     g_signal_connect(prevButton, "clicked", G_CALLBACK(prev_callback),(gpointer) this);
 
     page_nextButton = gtk_button_new_with_label(">>");
     g_signal_connect(page_nextButton, "clicked", G_CALLBACK(page_nextButtonCB),(gpointer) this);
 
-    volumeSlider = gtk_hscale_new_with_range(0, 100, 0.1);
+    volumeSlider = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 100, 0.1);
     gtk_range_set_value((GtkRange*)volumeSlider, 80);
     g_signal_connect(volumeSlider, "change-value", G_CALLBACK(volume_chnagedCB),(gpointer) this);
 
 
-    box = gtk_hbox_new (FALSE, 0);
+    box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 2);
 //    gtk_box_pack_start (GTK_BOX (box), connectButton, FALSE, FALSE, 3);
     gtk_box_pack_start (GTK_BOX (box), playButton, FALSE, FALSE, 3);
@@ -272,11 +272,11 @@ void MainWindow::createContent()
 
     g_signal_connect (pqTree, "row-activated", (GCallback) activate_cb, this);
 
-    gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(pqTreeScrollWindow), pqTree);
+    gtk_container_add(GTK_CONTAINER(pqTreeScrollWindow), pqTree);
     gtk_widget_show(pqTree);
 
 
-    vbox = gtk_vbox_new (FALSE, 0);
+    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
     gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
 
     gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 3);
@@ -286,8 +286,6 @@ void MainWindow::createContent()
     gtk_widget_show(box);
     gtk_widget_show(progress);
     gtk_widget_show(pqTreeScrollWindow);
-
-
 
     gtk_widget_show(vbox);
 
@@ -319,8 +317,6 @@ void MainWindow::handleUpdateTimer()
     m_cachedPosition = m_player.getPosition();
     updateProgress();
 }
-
-
 
 void MainWindow::OnConnect()
 {

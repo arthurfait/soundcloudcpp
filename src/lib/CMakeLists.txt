@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+add_definitions(-fPIC)
 
 add_subdirectory("support")
 add_subdirectory("parser")

@@ -34,12 +34,11 @@ else
 	PRODUCTS_DIR="$ABSOLUTE_PATH/build"
 fi	
 
-mkdir -p $PRODUCTS_DIR
-
 if [[ "$CLEAN" == "true" ]]; then
     rm -R -f "$PRODUCTS_DIR"
 fi
 
+mkdir -p $PRODUCTS_DIR
 cd $PRODUCTS_DIR
 
 echo "STAGE: <<<<< Configuring >>>>>"

@@ -39,12 +39,24 @@ public:
         return m_title;
     }
 
+    const char* c_title() const {
+        return m_title.c_str();
+    }
+
     const std::string& description() const {
         return m_description;
     }
 
+    const char* c_description() const {
+        return m_description.c_str();
+    }
+
     const std::string& genre() const {
         return m_genre;
+    }
+
+    const char* c_genre() const {
+        return m_genre.c_str();
     }
 
     const unsigned duration() const {
@@ -55,12 +67,20 @@ public:
         return m_stream_url;
     }
 
+    const char* c_stream_url() const {
+        return m_stream_url.c_str();
+    }
+
     const std::string& license() const {
         return m_license;
     }
 
     const std::string& artwork_url() const {
         return m_artwork_url;
+    }
+
+    const char* c_artwork_url() const {
+        return m_artwork_url.c_str();
     }
 
     const std::string& waveform_url() const {
@@ -70,6 +90,11 @@ public:
     const User& user() const {
         return m_user;
     }
+
+    const char* c_userName() const {
+        return m_user.username().c_str();
+    }
+
 
 private:
     std::string m_title;
