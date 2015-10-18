@@ -71,14 +71,24 @@ void SoundCloudWidget::OnActivate(int index)
     // std::cout << "url: " << url << "\n";
     // std::cout << "num: " << aud_playlist_get_active() << "\n";
     Index * filenames = index_new ();
-        Index * tuples = index_new ();
+    Index * tuples = index_new ();
     // for (int m = 0; m < item->matches->len; m ++) {
         index_insert (filenames, -1, str_to_utf8(url.c_str(), url.size()));
         Tuple* tup = tuple_new();
-        tuple_set_str(tup, FIELD_ARTIST, str_to_utf8(m_currentTrackList[index].c_userName(), m_currentTrackList[index].user().username().size()));
-        tuple_set_str(tup, FIELD_TITLE, str_to_utf8(m_currentTrackList[index].c_title(), m_currentTrackList[index].title().size()));
-        tuple_set_str(tup, FIELD_GENRE, str_to_utf8(m_currentTrackList[index].c_genre(), m_currentTrackList[index].genre().size()));
-        tuple_set_str(tup, FIELD_COMMENT, str_to_utf8(m_currentTrackList[index].c_description(), m_currentTrackList[index].description().size()));
+        
+        char *artist =  str_to_utf8(m_currentTrackList[index].c_userName(), m_currentTrackList[index].user().username().size());
+        tuple_set_str(tup, FIELD_ARTIST, artist);
+        str_unref(artist);
+
+        char *title = str_to_utf8(m_currentTrackList[index].c_title(), m_currentTrackList[index].title().size());
+        tuple_set_str(tup, FIELD_TITLE, title);
+        str_unref(title);
+
+        char *genre = str_to_utf8(m_currentTrackList[index].c_genre(), m_currentTrackList[index].genre().size());
+        tuple_set_str(tup, FIELD_GENRE, genre);
+        str_unref(genre);
+
+        // tuple_set_str(tup, FIELD_COMMENT, str_to_utf8(m_currentTrackList[index].c_description(), m_currentTrackList[index].description().size()));
         tuple_set_int(tup, FIELD_LENGTH, m_currentTrackList[index].duration());
 
         index_insert (tuples, -1, tup);
@@ -201,6 +211,8 @@ void SoundCloudWidget::OnConnect()
     std::string query = "";
     if (m_searchString[0] == '@') {
         genres.push_back(m_searchString.substr(1));
+    } else if (m_searchString[0] == '#') {
+        taglist.push_back(m_searchString.substr(1));
     } else {
         query = m_searchString.substr(1);
     }
