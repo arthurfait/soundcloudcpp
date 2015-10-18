@@ -23,7 +23,7 @@ std::string AuthDelegate::getAuthUrl()
     "&response_type=code"+
     "&scope=non-expiring";
 
-    printf("%s\n", url.c_str());
+    // printf("%s\n", url.c_str());
     return url;
 }
 
