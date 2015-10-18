@@ -205,8 +205,6 @@ void SoundCloudWidget::OnConnect()
         query = m_searchString.substr(1);
     }
 
-    std::cout << query << " -- " << genres[0];
-
     m_currentRequest = m_client.getTracks(query, taglist, genres, 30);
     auto tracks = m_currentRequest->next();
     fillPQList(tracks);
