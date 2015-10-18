@@ -94,7 +94,7 @@ void SoundCloudWidget::OnActivate(int index)
         index_insert (tuples, -1, tup);
     // }
     aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
-     tuples, 1);
+     tuples, 0);
 }
 
 
