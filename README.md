@@ -2,17 +2,20 @@ soundcloudcpp
 ========
 
 TO BUILD:
-<pre>
+
+```bash
+
 cd soundcloudcpp/src
-mkdir build
-cd build && cmake ..
-make or make -j <your num of cpus>
-This will build library and demoApp
-</pre>
+./build.sh
+
+```
+
+This will build library and demoApp.
 
 TODO
 ====
-add QML based demo?
-add raw GLESv2 demo?
+
+* add QML based demo?
+* add raw GLESv2 demo?
 
 
