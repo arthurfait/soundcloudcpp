@@ -78,6 +78,7 @@ private:
     uint32_t m_cachedDuration;
     uint32_t m_cachedPosition;
     std::vector<soundcloud::Track> m_currentTrackList;
+    std::uint32_t m_currentTrackIndex;
 
 
     //

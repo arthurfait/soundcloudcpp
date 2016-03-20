@@ -94,6 +94,7 @@ static gboolean updateTimerCB(gpointer data)
 
 void MainWindow::OnActivate(int index)
 {
+    m_currentTrackIndex = index;
     std::cout << "url: " << m_client.resolveTrackStream(m_currentTrackList[index]) << "\n";
     m_player.load(m_client.resolveTrackStream(m_currentTrackList[index]));
     m_player.play();
@@ -117,12 +118,16 @@ void MainWindow::OnStop()
 
 void MainWindow::OnPrev()
 {
-
+    if ((m_currentTrackIndex-1) >= 0) {
+        OnActivate(m_currentTrackIndex-1);
+    }
 }
 
 void MainWindow::OnNext()
 {
-
+    if ((m_currentTrackIndex+1) < m_currentTrackList.size()) {
+        OnActivate(m_currentTrackIndex+1);
+    }
 }
 
 void MainWindow::OnVolume(gdouble volume)
@@ -163,6 +168,7 @@ const std::string kClientID = "a5a98f5d549a83896d565f69eb644b65";
 
 MainWindow::MainWindow()
     : m_client(kClientID)
+    , m_currentTrackIndex(0)
     , m_timerHandle(0)
     , m_player(demo::Player::ePlayerPlaybackBackground)
 {
@@ -292,9 +298,7 @@ void MainWindow::createContent()
 
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
-    printf("conn\n");
     g_timeout_add(500, connect_timeoutCB, this);
-    printf("conn\n");
 }
 
 void MainWindow::show()
