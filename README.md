@@ -1,6 +1,11 @@
 soundcloudcpp
 ========
 
+<a href="https://scan.coverity.com/projects/arthurfait-soundcloudcpp">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/9935/badge.svg"/>
+</a>
+
 TO BUILD:
 
 ```bash
