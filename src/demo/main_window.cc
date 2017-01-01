@@ -118,9 +118,11 @@ void MainWindow::OnStop()
 
 void MainWindow::OnPrev()
 {
-    if ((m_currentTrackIndex-1) >= 0) {
-        OnActivate(m_currentTrackIndex-1);
+    m_currentTrackIndex--;
+    if (m_currentTrackIndex > m_currentTrackList.size()) {
+        m_currentTrackIndex = 0;
     }
+    OnActivate(m_currentTrackIndex);
 }
 
 void MainWindow::OnNext()
@@ -380,5 +382,3 @@ void MainWindow::onSeekDone()
 {
 
 }
-
-

@@ -24,9 +24,19 @@ protected:
     uint32_t m_limit;
 };
 
+
 class TracksQuery: public Query
 {
 public:
+    /** Construct TracksQuery object
+ * 
+ * @param baseURL API URL
+ * @param clientID client id for SoundCloud
+ * @param limit maximum number of tracks(up to  200)
+ * @param searchString generic search string
+ * @param tagList vector with tags
+ * @param genres vector with genres
+ */
     TracksQuery(const std::string baseURL,
                 const std::string clientID,
                 const uint32_t limit,

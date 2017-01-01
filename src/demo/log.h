@@ -62,6 +62,8 @@ public:
         :m_message(message)
     {
         clock_gettime(CLOCK_REALTIME, &__measure_start);
+        __measure_stop.tv_sec = __measure_start.tv_sec;
+        __measure_stop.tv_nsec = __measure_start.tv_nsec;
     }
 
     ~LogScopeTime() {
