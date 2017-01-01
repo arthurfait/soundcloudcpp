@@ -37,3 +37,11 @@ src/build/*
 src-build/*
 src/lib/build/*
 src/demo/build/*
+/src/CMakeCache.txt
+/src/Makefile
+/src/compile_commands.json
+/src/cmake_install.cmake
+/src/CMakeFiles/
+/src/demo/CMakeFiles/
+/src/demo/cmake_install.cmake
+/src/demo/Makefile
