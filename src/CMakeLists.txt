@@ -8,6 +8,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY  ${CMAKE_BINARY_DIR}/libs)
 # set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory("demo")
-#add_subdirectory("audacious")
+add_subdirectory("audacious")
 add_subdirectory("lib")
 add_subdirectory("test")
