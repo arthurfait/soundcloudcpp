@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 find_package(PkgConfig)
-pkg_check_modules(GTK REQUIRED gtk+-3.0)
+pkg_check_modules(GTK REQUIRED gtk+-2.0)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -12,9 +12,8 @@ include_directories(
 
 add_library(${PROJECT_NAME} SHARED
     soundcloud_widget.cc
-    plugin.cc
-    plugin_entry.c
+    # plugin.cc
+    # plugin_entry.c
 )
 
 target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES} soundcloud_client)
-

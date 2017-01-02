@@ -5,21 +5,69 @@
  *
  */
 #include "soundcloud_widget.h"
-#include <stdlib.h>
+// #include <stdlib.h>
+#include <string.h>
 
 
-extern "C" {
 
-#include <audacious/i18n.h>
-#include <audacious/misc.h>
-#include <audacious/playlist.h>
-#include <audacious/plugin.h>
+#define AUD_PLUGIN_GLIB_ONLY
 #include <libaudcore/audstrings.h>
 #include <libaudcore/hook.h>
+#include <libaudcore/i18n.h>
+#include <libaudcore/playlist.h>
+#include <libaudcore/plugin.h>
+#include <libaudcore/mainloop.h>
+// #include <libaudcore/multihash.h>
+#include <libaudcore/runtime.h>
+#include <libaudgui/libaudgui-gtk.h>
 #include <libaudgui/list.h>
 #include <libaudgui/menu.h>
 
+
+class SoundCloudPlugin : public GeneralPlugin
+{
+public:
+    static constexpr PluginInfo info = {
+        N_("SoundCloud"),
+        "SoundCloud"
+    };
+
+    constexpr SoundCloudPlugin () : GeneralPlugin (info, false) {}
+
+    void * get_gtk_widget ();
+    int take_message (const char * code, const void * data, int size);
+private:
+    SoundCloudWidget* sCWidget = nullptr;
+};
+
+
+void * SoundCloudPlugin::get_gtk_widget ()
+{
+    GtkWidget *frame = nullptr; //= gtk_frame_new(0);
+    if (!sCWidget) {
+        sCWidget = new SoundCloudWidget();
+        frame = gtk_frame_new(0);
+        gtk_frame_set_shadow_type((GtkFrame*)frame, GTK_SHADOW_NONE);
+        gtk_container_add((GtkContainer*)frame, sCWidget->content());
+        // return frame;
+    }
+    return frame;
 }
+
+int SoundCloudPlugin::take_message (const char * code, const void * data, int size)
+{
+    if (! strcmp (code, "grab focus"))
+    {
+        // if (entry)
+        //     gtk_widget_grab_focus (entry);
+        return 0;
+    }
+
+    return -1;
+}
+
+SoundCloudPlugin aud_plugin_instance;
+
 
 static void entry_cb (GtkEntry *entry, void *data)
 {
@@ -62,7 +110,7 @@ void SoundCloudWidget::OnEntryChanged()
         }
         m_searchString.assign(searchCString);
         m_searchTimer = g_timeout_add(500, connect_timeoutCB, this);
-    } 
+    }
 }
 
 void SoundCloudWidget::OnActivate(int index)
@@ -70,31 +118,37 @@ void SoundCloudWidget::OnActivate(int index)
     auto url = m_client.resolveTrackStream(m_currentTrackList[index]);
     // std::cout << "url: " << url << "\n";
     // std::cout << "num: " << aud_playlist_get_active() << "\n";
-    Index * filenames = index_new ();
-    Index * tuples = index_new ();
-    // for (int m = 0; m < item->matches->len; m ++) {
-        index_insert (filenames, -1, str_to_utf8(url.c_str(), url.size()));
-        Tuple* tup = tuple_new();
-        
-        char *artist =  str_to_utf8(m_currentTrackList[index].c_userName(), m_currentTrackList[index].user().username().size());
-        tuple_set_str(tup, FIELD_ARTIST, artist);
-        str_unref(artist);
-
-        char *title = str_to_utf8(m_currentTrackList[index].c_title(), m_currentTrackList[index].title().size());
-        tuple_set_str(tup, FIELD_TITLE, title);
-        str_unref(title);
-
-        char *genre = str_to_utf8(m_currentTrackList[index].c_genre(), m_currentTrackList[index].genre().size());
-        tuple_set_str(tup, FIELD_GENRE, genre);
-        str_unref(genre);
-
-        // tuple_set_str(tup, FIELD_COMMENT, str_to_utf8(m_currentTrackList[index].c_description(), m_currentTrackList[index].description().size()));
-        tuple_set_int(tup, FIELD_LENGTH, m_currentTrackList[index].duration());
-
-        index_insert (tuples, -1, tup);
+    // Index * filenames = index_new ();
+    // Index * tuples = index_new ();
+    // // for (int m = 0; m < item->matches->len; m ++) {
+    //     index_insert (filenames, -1, str_to_utf8(url.c_str(), url.size()));
+    //     Tuple* tup = tuple_new();
+    //
+    //     char *artist =  str_to_utf8(m_currentTrackList[index].c_userName(), m_currentTrackList[index].user().username().size());
+    //     tuple_set_str(tup, FIELD_ARTIST, artist);
+    //     str_unref(artist);
+    //
+    //     char *title = str_to_utf8(m_currentTrackList[index].c_title(), m_currentTrackList[index].title().size());
+    //     tuple_set_str(tup, FIELD_TITLE, title);
+    //     str_unref(title);
+    //
+    //     char *genre = str_to_utf8(m_currentTrackList[index].c_genre(), m_currentTrackList[index].genre().size());
+    //     tuple_set_str(tup, FIELD_GENRE, genre);
+    //     str_unref(genre);
+    //
+    //     // tuple_set_str(tup, FIELD_COMMENT, str_to_utf8(m_currentTrackList[index].c_description(), m_currentTrackList[index].description().size()));
+    //     tuple_set_int(tup, FIELD_LENGTH, m_currentTrackList[index].duration());
+    //
+    //     index_insert (tuples, -1, tup);
     // }
-    aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
-     tuples, 0);
+    // aud_playlist_entry_insert_batch (aud_playlist_get_active (), -1, filenames,
+    //  tuples, 0);
+    Tuple tuple;
+    tuple.set_str(Tuple::field_by_name("title"), m_currentTrackList[index].c_title());
+    tuple.set_str(Tuple::field_by_name("artist"), m_currentTrackList[index].c_userName());
+    tuple.set_str(Tuple::field_by_name("genre"), m_currentTrackList[index].c_genre());
+
+    aud_playlist_entry_insert (aud_playlist_get_active (), -1 , url.c_str(), std::move(tuple), 0);
 }
 
 
@@ -129,7 +183,8 @@ void SoundCloudWidget::createContent()
 
     entry = gtk_entry_new ();
     gtk_entry_set_icon_from_icon_name ((GtkEntry *) entry, GTK_ENTRY_ICON_PRIMARY, "edit-find");
-    gtk_entry_set_placeholder_text ((GtkEntry *) entry, "Search SoundCloud");
+    // onlu 3.0 FIXME: add ifdef here
+    // gtk_entry_set_placeholder_text ((GtkEntry *) entry, "Search SoundCloud");
     gtk_entry_set_text((GtkEntry *) entry, m_searchString.c_str());
     g_signal_connect (entry, "destroy", (GCallback) gtk_widget_destroyed, & entry);
     g_signal_connect (entry, "changed", (GCallback) entry_cb, (gpointer)this);
@@ -139,7 +194,8 @@ void SoundCloudWidget::createContent()
     g_signal_connect(page_nextButton, "clicked", G_CALLBACK(page_nextButtonCB),(gpointer) this);
 
 
-    box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    // box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
+    box = gtk_hbox_new (0, 0);
     gtk_container_set_border_width (GTK_CONTAINER (box), 2);
 //    gtk_box_pack_start (GTK_BOX (box), connectButton, FALSE, FALSE, 3);
     gtk_box_pack_start ((GtkBox *) box, entry, FALSE, FALSE, 0);
@@ -188,7 +244,8 @@ void SoundCloudWidget::createContent()
     gtk_widget_show(pqTree);
 
 
-    vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    // vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    vbox = gtk_vbox_new (0, 0);
     gtk_container_set_border_width (GTK_CONTAINER (vbox), 2);
 
     gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 3);
@@ -227,4 +284,3 @@ void SoundCloudWidget::nextPage()
     auto tracks = m_currentRequest->next();
     fillPQList(tracks);
 }
-
