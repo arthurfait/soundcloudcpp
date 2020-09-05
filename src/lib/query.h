@@ -28,8 +28,8 @@ protected:
 class TracksQuery: public Query
 {
 public:
-    /** Construct TracksQuery object
- * 
+/** Construct TracksQuery object
+ *
  * @param baseURL API URL
  * @param clientID client id for SoundCloud
  * @param limit maximum number of tracks(up to  200)

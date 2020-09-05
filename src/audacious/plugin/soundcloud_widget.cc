@@ -148,7 +148,10 @@ void SoundCloudWidget::OnActivate(int index)
     tuple.set_str(Tuple::field_by_name("artist"), m_currentTrackList[index].c_userName());
     tuple.set_str(Tuple::field_by_name("genre"), m_currentTrackList[index].c_genre());
 
-    aud_playlist_entry_insert (aud_playlist_get_active (), -1 , url.c_str(), std::move(tuple), 0);
+    auto playlist = Playlist::active_playlist();
+    playlist.insert_entry(-1, url.c_str(), std::move(tuple), false);
+
+    // aud_playlist_entry_insert (aud_playlist_get_active (), -1 , url.c_str(), std::move(tuple), 0);
 }
 
 

@@ -3,9 +3,9 @@ find_package(PkgConfig)
 pkg_check_modules(GTK REQUIRED gtk+-3.0)
 pkg_check_modules(GSTREAMER010 REQUIRED gstreamer-1.0)
 
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_definitions(-Wno-ignored-qualifiers)
+add_definitions(" -Wno-deprecated-declarations ")
 
 project(demoApp)
 include_directories(
@@ -20,4 +20,3 @@ add_executable(${PROJECT_NAME} main_window.cc
     )
 
 target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES} ${GSTREAMER010_LIBRARIES} soundcloud_client)
-

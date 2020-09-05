@@ -1,19 +1,24 @@
-cmake_minimum_required(VERSION 2.8)
-find_package(PkgConfig)
-pkg_check_modules(GTK REQUIRED gtk+-2.0)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-
 project(soundcloud_plugin)
-include_directories(
-    ${GTK_INCLUDE_DIRS}
-)
 
+find_package(PkgConfig)
+pkg_check_modules(GTK2 REQUIRED gtk+-2.0)
+pkg_check_modules(AUDACIOUS REQUIRED audacious)
+
+execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} "--variable" "plugin_dir" "audacious"
+                    OUTPUT_VARIABLE plugin_path
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    )
+
+
+add_definitions(" -Wno-deprecated-declarations ")
 
 add_library(${PROJECT_NAME} SHARED
     soundcloud_widget.cc
-    # plugin.cc
-    # plugin_entry.c
 )
 
-target_link_libraries(${PROJECT_NAME} ${GTK_LIBRARIES} soundcloud_client)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${GTK2_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${GTK2_LIBRARIES} ${AUDACIOUS_LIBRARIES} soundcloud_client)
+
+message(STATUS "Audacious plugins path: ${plugin_path}")
+install(TARGETS ${PROJECT_NAME} DESTINATION "${plugin_path}/General")

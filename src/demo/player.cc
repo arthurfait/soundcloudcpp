@@ -157,11 +157,11 @@ void Player::seek(float newPosition)
 
     double seconds;
     double microSeconds = modf(newPosition, &seconds) * 1000000;
-    GTimeVal timeValue;
-    timeValue.tv_sec = static_cast<glong>(seconds);
-    timeValue.tv_usec = static_cast<glong>(roundf(microSeconds / 10000) * 10000);
+    struct timespec timeValue;
+    timeValue.tv_sec = static_cast<time_t>(seconds);
+    timeValue.tv_nsec = static_cast<time_t>(roundf(microSeconds / 10000) * 10000);
 
-    GstClockTime clockTime = GST_TIMEVAL_TO_TIME(timeValue);
+    GstClockTime clockTime = GST_TIMESPEC_TO_TIME(timeValue);
     log_info("Seek: %" GST_TIME_FORMAT, GST_TIME_ARGS(clockTime));
 
     if (!gst_element_seek(playbin2, 1.0,
@@ -286,7 +286,6 @@ void Player::handleStateCnanged(GstMessage *msg)
 bool Player::initializeGStreamer()
 {
     GError* error = 0;
-    // FIXME: We should probably pass the arguments from the command line.
     gstInitialized = gst_init_check(0, 0, &error);
     if (error)
         g_free(error);
